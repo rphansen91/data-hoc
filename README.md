@@ -48,7 +48,96 @@ export const FetchJedis = ({ params = {} }) => (
 ### Server Side Rendering
 
 [Example Here](https://github.com/rphansen91/react-ssr)
-Docs Coming Soon
+
+```javascript
+// /server/index.js
+import express from 'express';
+import universalLoader from './universal';
+
+const app = express();
+const PORT = process.env.PORT || 8081;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.resolve(__dirname, '../build'), { index: false }));
+app.use('*', universalLoader);
+
+app.listen(PORT, () => {
+  console.log(`App listening on port ${PORT}!`);
+});
+```
+
+```javascript
+// /server/universal.js
+import path from 'path';
+import fs from 'fs';
+import React from 'react';
+import { StaticRouter } from 'react-router-dom';
+import { renderToString } from 'react-dom/server';
+import { SSRDataProvider, createSSRDataClient } from 'data-hoc';
+import App from '../src/App';
+
+const filePath = path.resolve(__dirname, '../build/index.html');
+const htmlData = fs.readFileSync(filePath, 'utf8');
+const prepHTML = (html, { body, state }) => {
+  return html.replace('</head>', `<script>window.__SSR_DATA__=${JSON.stringify(state).replace(/</g, '\\u003c')}</script></head>`)
+  .replace(/<div id="root">.*<\/div>/, `<div id="root">${body}</div>`)
+};
+
+const universalLoader = (req, res) => {
+  const context = {}
+  const client = createSSRDataClient({}, { ssr: true });
+  const ServerApp = () => (
+    <SSRDataProvider value={client}>
+      <StaticRouter location={req.originalUrl} context={context}>
+        <App />
+      </StaticRouter>
+    </SSRDataProvider>
+  );
+
+  renderToString(<ServerApp />);
+  
+  client.isReady()
+  .then(() => {
+    if (context.url) {
+      return res.redirect(301, context.url);
+    }
+    const body = renderToString(<ServerApp />);
+    const state = client.extract();
+    const html = prepHTML(htmlData, {
+      state,
+      body
+    });
+
+    res.send(html);
+  })
+  .catch(e => {
+    res.send(htmlData);
+  });
+
+};
+
+export default universalLoader;
+```
+
+```javascript
+// /src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import { SSRDataProvider, createSSRDataClient } from 'data-hoc';
+import App from './App';
+
+const initial = window.__SSR_DATA__ || {};
+const client = createSSRDataClient(initial);
+
+ReactDOM.render(
+    <SSRDataProvider value={client}>
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
+    </SSRDataProvider>
+    , document.getElementById('root'));
+```
 
 ## Credits
 
