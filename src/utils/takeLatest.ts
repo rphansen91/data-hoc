@@ -3,7 +3,6 @@ import { DataRequestCb } from './Interfaces'
 interface Latest<P> {
   (params: P): Promise<void>
   cancel: () => void
-  resume: () => void
 }
 
 export default function takeLatest<P, R>(
@@ -28,15 +27,14 @@ export default function takeLatest<P, R>(
     return fn(params)
       .then(stash(params))
       .catch(e => {
-        if (!canceled) onError(e)
+        if (!canceled) {
+          onError(e)
+        }
       })
   }
 
   latest.cancel = () => {
     canceled = true
-  }
-  latest.resume = () => {
-    canceled = false
   }
 
   return latest

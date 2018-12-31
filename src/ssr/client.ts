@@ -18,11 +18,13 @@ export default (
       const token = tokenize(name, params)
       const request = fn(params)
       activeRequests.add(request)
-      request.then(v => {
-        dataStore[token] = v
-        activeRequests.delete(request)
-        if (!activeRequests.size) isReady.resolve(dataStore)
-      })
+      request
+        .then(v => {
+          dataStore[token] = v
+          activeRequests.delete(request)
+          if (!activeRequests.size) isReady.resolve(dataStore)
+        })
+        .catch(() => null)
 
       if (options.ssr) {
         // Never resolve server will extract data on ready

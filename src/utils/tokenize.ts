@@ -1,4 +1,4 @@
-function cleanStr(name: string = ''): string {
+function cleanStr(name: string): string {
   return name.toString().replace(/\n/g, '')
 }
 

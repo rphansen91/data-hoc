@@ -5,7 +5,7 @@ import { DataClient, DataRequestCb } from "../utils/Interfaces";
 
 interface Props<P, R, S> {
     children: (state: S) => ReactNode;
-    ssrClient: DataClient|undefined;
+    ssrClient: DataClient;
     name: string;
     query: DataRequestCb<P, R>;
     params: P;
@@ -30,8 +30,7 @@ class Async<P, R> extends Component<Props<P, R, S<R>>, S<R>> {
     }
     makeRequest: DataRequestCb<P, R> = (params: P) => {
         const { ssrClient, name, query } = this.props;
-        if (ssrClient) return ssrClient.makeRequest(name, query, params);
-        return query(params);
+        return ssrClient.makeRequest(name, query, params);
     }
     runLatestQuery = takeLatest<P, R>(
         this.makeRequest, 
@@ -39,7 +38,9 @@ class Async<P, R> extends Component<Props<P, R, S<R>>, S<R>> {
         (e) => this.setState({ loading: false, error: e.message }),
     );
     componentWillMount() {
-        if (!this.state.data) this.runLatestQuery(this.props.params);
+        if (!this.state.data) {
+            this.runLatestQuery(this.props.params);
+        }
     }
     componentWillUpdate(nextProps: any) {
         if (this.props.params !== nextProps.params) {
@@ -52,9 +53,15 @@ class Async<P, R> extends Component<Props<P, R, S<R>>, S<R>> {
     }
     render() {
         const { children } = this.props;
-        if (typeof children !== "function") throw new Error("children must be a function");
+        if (typeof children !== "function") {
+            throw new Error("children must be a function");
+        }
         return children(this.state);
     }
 };
+
+export function AsyncHOC<P, R> () {
+    return withSSRDataClient<Props<P, R, S<R>>>(Async);
+}
 
 export default withSSRDataClient(Async);

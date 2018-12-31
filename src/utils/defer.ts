@@ -5,19 +5,13 @@ interface Defered<T> {
 }
 
 export default function defer<T>(): Defered<T> {
-  let resolved: T | undefined
-  let rejected: any
-  let resolve = (v: T | undefined) => {
-    resolved = v
-  }
-  let reject = (e: any) => {
-    rejected = e
-  }
+  let resolve: (value: T | undefined) => void = () => null
+  let reject: (error: any) => void = () => null
   const promise = new Promise<T>((res, rej) => {
+    resolve(undefined)
+    reject(undefined)
     resolve = res
     reject = rej
-    if (rejected) reject(rejected)
-    else if (resolved) resolve(resolved)
   })
   return { promise, resolve, reject }
 }
