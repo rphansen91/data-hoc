@@ -3,6 +3,7 @@
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Travis](https://img.shields.io/travis/rphansen91/data-hoc.svg)](https://travis-ci.org/rphansen91/data-hoc)
 [![Coveralls](https://img.shields.io/coveralls/rphansen91/data-hoc.svg)](https://coveralls.io/github/rphansen91/data-hoc)
+[![Greenkeeper badge](https://badges.greenkeeper.io/rphansen91/data-hoc.svg)](https://greenkeeper.io/)
 [![Dev Dependencies](https://david-dm.org/rphansen91/data-hoc/dev-status.svg)](https://david-dm.org/rphansen91/data-hoc?type=dev)
 [![npm](https://img.shields.io/npm/v/data-hoc.svg)](https://www.npmjs.com/package/data-hoc)
 [![downloads](https://img.shields.io/npm/dw/data-hoc.svg)](https://www.npmjs.com/package/data-hoc)
