@@ -7,7 +7,6 @@
 [![Dev Dependencies](https://david-dm.org/rphansen91/data-hoc/dev-status.svg)](https://david-dm.org/rphansen91/data-hoc?type=dev)
 [![npm](https://img.shields.io/npm/v/data-hoc.svg)](https://www.npmjs.com/package/data-hoc)
 [![downloads](https://img.shields.io/npm/dw/data-hoc.svg)](https://www.npmjs.com/package/data-hoc)
-<!-- [![Donate](https://img.shields.io/badge/donate-paypal-blue.svg)](https://paypal.me/AJoverMorales) -->
 
 A set of react providers and components that allows for data to be used as a component, whether on the server or on the client. 
 
