@@ -1,7 +1,6 @@
 # Data HOC
 
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Greenkeeper badge](https://badges.greenkeeper.io/rphansen91/data-hoc.svg)](https://greenkeeper.io/)
 [![Travis](https://img.shields.io/travis/rphansen91/data-hoc.svg)](https://travis-ci.org/rphansen91/data-hoc)
 [![Coveralls](https://img.shields.io/coveralls/rphansen91/data-hoc.svg)](https://coveralls.io/github/rphansen91/data-hoc)
 [![Dev Dependencies](https://david-dm.org/rphansen91/data-hoc/dev-status.svg)](https://david-dm.org/rphansen91/data-hoc?type=dev)
