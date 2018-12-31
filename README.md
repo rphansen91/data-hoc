@@ -64,5 +64,3 @@ Made with :heart: by [@rphansen91](https://github.com/rphansen91) and all these 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/kentcdodds/all-contributors) specification. Contributions of any kind are welcome!
-
-![](/hawk.jpg)
