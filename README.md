@@ -1,17 +1,18 @@
 # Data HOC
 
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![Greenkeeper badge](https://badges.greenkeeper.io/alexjoverm/typescript-library-starter.svg)](https://greenkeeper.io/)
-<!-- [![Travis](https://img.shields.io/travis/alexjoverm/typescript-library-starter.svg)](https://travis-ci.org/alexjoverm/typescript-library-starter) -->
-<!-- [![Coveralls](https://img.shields.io/coveralls/alexjoverm/typescript-library-starter.svg)](https://coveralls.io/github/alexjoverm/typescript-library-starter) -->
-<!-- [![Dev Dependencies](https://david-dm.org/alexjoverm/typescript-library-starter/dev-status.svg)](https://david-dm.org/alexjoverm/typescript-library-starter?type=dev) -->
+[![Greenkeeper badge](https://badges.greenkeeper.io/rphansen91/data-hoc.svg)](https://greenkeeper.io/)
+[![Travis](https://img.shields.io/travis/rphansen91/data-hoc.svg)](https://travis-ci.org/rphansen91/data-hoc)
+[![Coveralls](https://img.shields.io/coveralls/rphansen91/data-hoc.svg)](https://coveralls.io/github/rphansen91/data-hoc)
+[![Dev Dependencies](https://david-dm.org/rphansen91/data-hoc/dev-status.svg)](https://david-dm.org/rphansen91/data-hoc?type=dev)
 <!-- [![Donate](https://img.shields.io/badge/donate-paypal-blue.svg)](https://paypal.me/AJoverMorales) -->
+
+![](/hawk.jpg)
 
 A set of react providers and components that allows for data to be used as a component, whether on the server or on the client. 
 
 [Example App](https://github.com/rphansen91/react-ssr)
 
-<!-- ![](https://i.imgur.com/opUmHp0.png) -->
 
 ### Install
 
