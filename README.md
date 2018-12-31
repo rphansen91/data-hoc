@@ -19,10 +19,12 @@ A set of react providers and components that allows for data to be used as a com
 yarn add data-hoc
 ```
 
+
 ### Features
 
 - Async Loader Higher Order Components
 - Opt In Server Side Rendering
+
 
 ### Loading Data
 
