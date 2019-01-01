@@ -31,6 +31,10 @@ export default (
         })
         .catch(() => null)
 
+      if (options.ssr) {
+        return new Promise(() => null)
+      }
+
       return request
     },
     getCached: (name, params) => {
