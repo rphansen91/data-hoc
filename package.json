@@ -120,7 +120,9 @@
   },
   "dependencies": {
     "@types/react": "^16.7.18",
+    "@types/react-dom": "^16.0.11",
     "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "utility-types": "^3.2.0"
   }
 }

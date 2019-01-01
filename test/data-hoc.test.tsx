@@ -2,10 +2,11 @@ import * as React from "react"
 import * as renderer from 'react-test-renderer';
 import { AsyncHOC } from '../src/hocs/Async';
 import {
+  renderToStringWithData,
   createSSRDataClient,
   withSSRDataClient,
   SSRDataProvider
-} from '../src/data-hoc'
+} from '../src/data-hoc';
 
 interface TestResult {
   id: string;
@@ -276,31 +277,32 @@ describe('Data HOC', () => {
     const client = createSSRDataClient(data, { ssr: true });
     const Child = jest.fn().mockImplementation(DisplayData);
     client.makeRequest = jest.fn().mockImplementation(client.makeRequest);
-    const component = renderer.create(
+    const ServerApp = () => (
       <SSRDataProvider value={client}>
         <TestHoc name="RequestOne" params={params1} query={query1}>
-          {({ data }) =>
-            data
+          {({ data }) => {
+            return data
             ? <TestHoc name="RequestTwo" params={data.id} query={query2}>
                 {Child}
               </TestHoc>
-            : <div>Loading...</div>
-          }
+            : <div>Loading</div>
+          }}
         </TestHoc>
       </SSRDataProvider>
     );
 
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
-    return client.isReady()
-    .then(() => {
-      tree = component.toJSON();
-      expect(tree).toMatchSnapshot();
+    return renderToStringWithData(client, ServerApp)
+    .then((content) => {
+      expect(content).toMatchSnapshot();
       expect(client.makeRequest).toBeCalledTimes(2);
       expect(client.makeRequest).toHaveBeenCalledWith("RequestOne", query1, params1);
       expect(client.makeRequest).toHaveBeenCalledWith("RequestTwo", query2, result1.id);
       expect(client.getCached("RequestOne", "searchTerm")).toBe(result1);
       expect(client.getCached("RequestTwo", "123")).toBe(result2);
+      expect(client.extract()).toEqual({
+        "RequestOne(\"searchTerm\")": result1,
+        "RequestTwo(\"123\")": result2,
+      });
     })
   })
 });

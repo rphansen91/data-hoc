@@ -74,8 +74,7 @@ import path from 'path';
 import fs from 'fs';
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
-import { renderToString } from 'react-dom/server';
-import { SSRDataProvider, createSSRDataClient } from 'data-hoc';
+import { SSRDataProvider, createSSRDataClient, renderToStringWithData } from 'data-hoc';
 import App from '../src/App';
 
 const filePath = path.resolve(__dirname, '../build/index.html');
@@ -95,15 +94,13 @@ const universalLoader = (req, res) => {
       </StaticRouter>
     </SSRDataProvider>
   );
-
-  renderToString(<ServerApp />);
   
-  client.isReady()
-  .then(() => {
+  renderToStringWithData(client, ServerApp);
+  .then((body) => {
     if (context.url) {
       return res.redirect(301, context.url);
     }
-    const body = renderToString(<ServerApp />);
+    
     const state = client.extract();
     const html = prepHTML(htmlData, {
       state,

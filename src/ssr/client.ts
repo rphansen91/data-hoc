@@ -15,7 +15,7 @@ export default (
   options: DataClientOptions = defaultOptions
 ): DataClient => {
   const activeRequests = new Set()
-  const isReady = defer<DataStore>()
+  let isReady = defer<DataStore>()
 
   return {
     makeRequest: (name, fn, params) => {
@@ -38,7 +38,9 @@ export default (
       return dataStore[token]
     },
     extract: () => dataStore,
+    size: () => activeRequests.size,
     isReady: () => {
+      isReady = defer<DataStore>()
       if (!activeRequests.size) isReady.resolve(dataStore)
       return isReady.promise
     }

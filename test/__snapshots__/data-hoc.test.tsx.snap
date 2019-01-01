@@ -106,18 +106,4 @@ exports[`Data HOC Should render a loader and then the error 2`] = `
 </div>
 `;
 
-exports[`Data HOC Should wait for nested requests 1`] = `
-<div>
-  Loading...
-</div>
-`;
-
-exports[`Data HOC Should wait for nested requests 2`] = `
-<div>
-  124
-   
-  Glass
-   
-  6.99
-</div>
-`;
+exports[`Data HOC Should wait for nested requests 1`] = `"<div>124<!-- --> <!-- -->Glass<!-- --> <!-- -->6.99</div>"`;
