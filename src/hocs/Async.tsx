@@ -3,65 +3,70 @@ import takeLatest from "../utils/takeLatest";
 import { withSSRDataClient } from "../ssr/context";
 import { DataClient, DataRequestCb } from "../utils/Interfaces";
 
-interface Props<P, R, S> {
-    children: (state: S) => ReactNode;
+interface Props<Params, Response, Values> {
+    children: (values: Values) => ReactNode;
     ssrClient: DataClient;
     name: string;
-    query: DataRequestCb<P, R>;
-    params: P;
+    query: DataRequestCb<Params, Response>;
+    params: Params;
 }
 
-interface S<R> {
+interface Values<Response> {
     loading: boolean;
     error: string;
-    data: R|undefined;
+    data: Response|undefined;
 }
 
-class Async<P, R> extends Component<Props<P, R, S<R>>, S<R>> {
-    constructor (props: Props<P, R, S<R>>) {
+class Async<Params, Response> extends Component<Props<Params, Response, Values<Response>>> {
+    currentValues: Values<Response>;
+    constructor (props: Props<Params, Response, Values<Response>>) {
         super(props);
         const { ssrClient, name, params } = props;
-        const data = ssrClient && ssrClient.getCached<P, R>(name, params)
-        this.state = {
+        const data = ssrClient && ssrClient.getCached<Params, Response>(name, params)
+        this.currentValues = {
             loading: !data,
             error: "",
             data,
         };
     }
-    makeRequest: DataRequestCb<P, R> = (params: P) => {
+    makeRequest: DataRequestCb<Params, Response> = (params: Params) => {
         const { ssrClient, name, query } = this.props;
         return ssrClient.makeRequest(name, query, params);
     }
-    runLatestQuery = takeLatest<P, R>(
+    runLatestQuery = takeLatest<Params, Response>(
         this.makeRequest, 
-        (data) => this.setState({ loading: false, data }), 
-        (e) => this.setState({ loading: false, error: e.message }),
+        (data) => this.updateValues({ loading: false, data, error: "" }), 
+        (e) => this.updateValues({ loading: false, data: this.currentValues.data, error: e.message }),
     );
     componentWillMount() {
-        if (!this.state.data) {
+        if (!this.currentValues.data) {
             this.runLatestQuery(this.props.params);
         }
     }
     componentWillUpdate(nextProps: any) {
         if (this.props.params !== nextProps.params) {
-            this.setState({ loading: true, error: "" })
+            this.updateValues({ loading: true, data: this.currentValues.data, error: "" });
             this.runLatestQuery(nextProps.params);
         }
     }
     componentWillUnmount() {
         this.runLatestQuery.cancel();
     }
+    updateValues (values: Values<Response>) {
+        this.currentValues = values;
+        this.forceUpdate();
+    }
     render() {
         const { children } = this.props;
         if (typeof children !== "function") {
             throw new Error("children must be a function");
         }
-        return children(this.state);
+        return children(this.currentValues);
     }
 };
 
-export function AsyncHOC<P, R> () {
-    return withSSRDataClient<Props<P, R, S<R>>>(Async);
+export function AsyncHOC<Params, Response> () {
+    return withSSRDataClient<Props<Params, Response, Values<Response>>>(Async);
 }
 
 export default withSSRDataClient(Async);

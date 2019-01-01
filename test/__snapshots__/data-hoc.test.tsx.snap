@@ -84,6 +84,16 @@ exports[`Data HOC Should render a loader and then the data 2`] = `
 </div>
 `;
 
+exports[`Data HOC Should render a loader and then the data 3`] = `
+<div>
+  123
+   
+  Mug
+   
+  2.99
+</div>
+`;
+
 exports[`Data HOC Should render a loader and then the error 1`] = `
 <div>
   Loading...
@@ -93,5 +103,21 @@ exports[`Data HOC Should render a loader and then the error 1`] = `
 exports[`Data HOC Should render a loader and then the error 2`] = `
 <div>
   Not found
+</div>
+`;
+
+exports[`Data HOC Should wait for nested requests 1`] = `
+<div>
+  Loading...
+</div>
+`;
+
+exports[`Data HOC Should wait for nested requests 2`] = `
+<div>
+  124
+   
+  Glass
+   
+  6.99
 </div>
 `;

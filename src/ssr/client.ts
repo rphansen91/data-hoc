@@ -6,6 +6,10 @@ const defaultOptions: DataClientOptions = {
   ssr: false
 }
 
+function waitForNextRender<P>(v: P) {
+  return new Promise(res => setImmediate(() => res(v)))
+}
+
 export default (
   dataStore: DataStore = {},
   options: DataClientOptions = defaultOptions
@@ -19,6 +23,7 @@ export default (
       const request = fn(params)
       activeRequests.add(request)
       request
+        .then(waitForNextRender)
         .then(v => {
           dataStore[token] = v
           activeRequests.delete(request)
@@ -26,10 +31,6 @@ export default (
         })
         .catch(() => null)
 
-      if (options.ssr) {
-        // Never resolve server will extract data on ready
-        return new Promise(() => null)
-      }
       return request
     },
     getCached: (name, params) => {
